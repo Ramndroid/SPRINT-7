@@ -1,0 +1,28 @@
+<div class="container-fluid mt-4">
+    
+    <p class="fs-5">¿Qué quieres hacer?</p>
+
+    <div class="form-check">
+        <input class="form-check-input" type="checkbox" value="" id="checkWeb" [(ngModel)]="homeCheckboxes[0]" (change)="homeClickOnCheckbox($event)">
+        <label class="form-check-label" for="checkWeb">
+            Una pàgina web (500 €)
+        </label>
+    </div>
+
+    <div class="form-check">
+        <input class="form-check-input" type="checkbox" value="" id="checkSeo" [(ngModel)]="homeCheckboxes[1]" (change)="homeClickOnCheckbox($event)">
+        <label class="form-check-label" for="checkSeo">
+            Una consultoria SEO (300 €)
+        </label>
+    </div>
+
+    <div class="form-check">
+        <input class="form-check-input" type="checkbox" value="" id="checkGAds" [(ngModel)]="homeCheckboxes[2]" (change)="homeClickOnCheckbox($event)">
+        <label class="form-check-label" for="checkGAds">
+            Una campanya de Google Ads (200 €)
+        </label>
+    </div>
+
+    <p class="fs-5 mt-4">Preu: {{ homeTotal }}€ </p>
+
+</div>
