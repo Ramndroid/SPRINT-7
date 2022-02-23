@@ -1,1 +1,8 @@
 /* You can add global styles to this file, and also import other style files */
+
+.modal-content {
+    background: white !important;
+    border       : 3px solid black !important;
+    border-radius: 16px !important;
+}
+

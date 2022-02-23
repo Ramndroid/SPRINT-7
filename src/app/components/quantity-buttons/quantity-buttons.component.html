@@ -1,11 +1,23 @@
 <div class="d-flex">
     <button class="btn-quantity" (click)="quantityChangeValue(1)">
-        <img src="assets/btns/btn-plus.svg">
+        <img class="img-quantity" src="assets/btns/btn-plus.svg">
     </button>
 
-    <input type="number" id="username" name="username" #username [(ngModel)]="quantityInputValue" (keyup)="quantityManualChange((username.value))">
+    <input type="number" id="username" name="username" #username [(ngModel)]="quantityInputValue"
+        (keyup)="quantityManualChange((username.value))">
 
     <button class="btn-quantity" (click)="quantityChangeValue(-1)">
-        <img src="assets/btns/btn-minus.svg">
+        <img class="img-quantity" src="assets/btns/btn-minus.svg">
     </button>
+
+    <button type="button" class="btn-quantity ms-2" (click)="modal.open(contenido)">
+        <img class="img-info" src="assets/btns/info-circle-fill.svg">
+    </button>
+
 </div>
+
+<ng-template #contenido let-modal>
+    <div class="modal-body">
+        {{ quantityInformationTextButton }}
+    </div>
+</ng-template>

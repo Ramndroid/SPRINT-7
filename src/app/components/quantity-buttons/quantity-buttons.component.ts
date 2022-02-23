@@ -1,4 +1,5 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-quantity-buttons',
@@ -7,11 +8,12 @@ import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 })
 export class QuantityButtonsComponent implements OnInit {
 
+  @Input() quantityInformationTextButton: string = "";
   @Output() quantityButtonsPressedKey = new EventEmitter<number>();
 
   quantityInputValue: number = 1;
 
-  constructor() { }
+  constructor(public modal: NgbModal) { }
 
   ngOnInit(): void {
     this.quantityButtonsPressedKey.emit(this.quantityInputValue);
@@ -37,7 +39,7 @@ export class QuantityButtonsComponent implements OnInit {
     }
   }
 
-  showValue(value:any) {
+  showValue(value: any) {
     console.log(typeof value, value);
   }
 

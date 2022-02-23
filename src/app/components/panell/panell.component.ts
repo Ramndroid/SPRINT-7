@@ -19,6 +19,11 @@ export class PanellComponent implements OnInit {
 
   panelInvalidForm: boolean = false;
 
+  panelInfoTextModal = {
+    pages: "En aquest component teniu que indicar el nombre de pàgines que tindrà la vostra web.",
+    languages: "En aquest component teniu que indicar el nombre d'idiomes disponibles que tindrà la vostra web."
+  }
+
   constructor(
     private _builder: FormBuilder, // legacy de exercici 2 sense us en aquest exercici :(
     private serviceGetTotalBudget: GetTotalBudgetService
