@@ -29,4 +29,16 @@ export class QuantityButtonsComponent implements OnInit {
 
   }
 
+  quantityManualChange(value: string) {
+    const valueToInt = parseInt(value);
+    if (!isNaN(valueToInt)) {
+      this.quantityInputValue = valueToInt;
+      this.quantityButtonsPressedKey.emit(this.quantityInputValue);
+    }
+  }
+
+  showValue(value:any) {
+    console.log(typeof value, value);
+  }
+
 }
