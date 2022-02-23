@@ -35,6 +35,6 @@ export class HomeComponent implements OnInit {
 
   homeCalculateTotal = (): void => this.serviceGetTotalBudget.calculateTotal(this.homeProducts);
 
-  homeGetTotalInEuros = (): string => this.serviceGetTotalBudget.getTotalInEuros("Preu: "); 
+  homeGetTotalInEuros = (): string => this.serviceGetTotalBudget.getTotalInEuros("Preu: ");
 
 }

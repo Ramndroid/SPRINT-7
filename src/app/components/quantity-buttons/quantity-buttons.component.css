@@ -1,0 +1,23 @@
+input {
+  border    : none;
+  text-align: center;
+  width     : 36px;
+}
+
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin            : 0;
+}
+
+.btn-quantity {
+  background-color   : transparent;
+  background-repeat  : no-repeat;
+  background-position: center;
+  padding            : 0px;
+  border             : none;
+}
+
+.btn-quantity img {
+  width: 32px;
+}

@@ -1,0 +1,11 @@
+<div class="d-flex">
+    <button class="btn-quantity" (click)="quantityChangeValue(1)">
+        <img src="assets/btns/btn-plus.svg">
+    </button>
+
+    <input type="number" [(ngModel)]="quantityInputValue">
+
+    <button class="btn-quantity" (click)="quantityChangeValue(-1)">
+        <img src="assets/btns/btn-minus.svg">
+    </button>
+</div>

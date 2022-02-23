@@ -1,17 +1,16 @@
-<form [formGroup]="panellWebForm" class="form-container my-3 py-5 d-flex flex-column gap-1"
-    (change)="panelCalculateSubtotalWeb()">
+<form [formGroup]="panellWebForm" class="form-container my-3 py-5 d-flex flex-column gap-1">
 
     <div class="mx-3 d-flex align-items-baseline gap-1">
         <p>Nombre de pàgines</p>
-        <input formControlName="inputWebsTotal" type="number" id="inputWebsTotal" class="flex-grow-1">
+        <app-quantity-buttons (quantityButtonsPressedKey)="panelSetQuantityPages($event)"></app-quantity-buttons>
     </div>
 
     <div class="mx-3 d-flex align-items-baseline gap-1">
         <p>Nombre d'idiomes</p>
-        <input formControlName="inputLanguagesTotal" type="number" id="inputLanguagesTotal" class="flex-grow-1">
+        <app-quantity-buttons (quantityButtonsPressedKey)="panelSetQuantityLanguages($event)"></app-quantity-buttons>
     </div>
 
-    <div class="text-danger align-self-end mx-3 text-end" *ngIf="panellWebForm.invalid">
+    <div class="text-danger align-self-end mx-3 text-end" *ngIf="panelInvalidForm">
         <b>Paràmetres no válids:</b> mínim d'una (1) pàgina i d'un (1) idioma.<br> <i>Sense paràmetres vàlids el
             pressupost no serà vinculant.</i>
     </div>
