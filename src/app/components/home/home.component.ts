@@ -1,4 +1,6 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { Products } from 'src/app/models/products';
+import { GetTotalBudgetService } from 'src/app/services/get-total-budget.service';
 
 @Component({
   selector: 'app-home',
@@ -7,36 +9,32 @@ import { Component, Input, OnInit } from '@angular/core';
 })
 export class HomeComponent implements OnInit {
 
-  homeCheckboxes: boolean[] = [false, false, false];
+  homeProducts: Products = {
+    web: {
+      title: "Una pàgina web (desde 530 €)",
+      price: 500,
+      selected: false
+    },
+    seo: {
+      title: "Una consultoría SEO (300 €)",
+      price: 300,
+      selected: false
+    },
+    gads: {
+      title: "Una campanya de Google Ads (200 €)",
+      price: 200,
+      selected: false
+    }
+  }
 
-  homeTotal: number = 0;
-
-  constructor() { }
+  constructor(
+    private serviceGetTotalBudget: GetTotalBudgetService
+  ) { }
 
   ngOnInit(): void { }
 
-  homeClickOnCheckbox(event: any) {
+  homeCalculateTotal = (): void => this.serviceGetTotalBudget.calculateTotal(this.homeProducts);
 
-    console.log(event.target.checked ?
-      `El usuario ha agregado ${event.target.id.replace("check", "")}`
-      : `El usuario ha retirado ${event.target.id.replace("check", "")}`);
-
-    const currentTotal = [0];
-
-    if (this.homeCheckboxes[0]) {
-      currentTotal.push(500);
-    }
-
-    if (this.homeCheckboxes[1]) {
-      currentTotal.push(300);
-    }
-
-    if (this.homeCheckboxes[2]) {
-      currentTotal.push(200);
-    }
-
-    this.homeTotal = currentTotal.reduce((prev, curr) => prev + curr);
-  }
-
+  homeGetTotalInEuros = (): string => this.serviceGetTotalBudget.getTotalInEuros("Preu: "); 
 
 }

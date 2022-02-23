@@ -1,28 +1,31 @@
 <div class="container-fluid mt-4">
-    
-    <p class="fs-5">¿Qué quieres hacer?</p>
 
-    <div class="form-check">
-        <input class="form-check-input" type="checkbox" value="" id="checkWeb" [(ngModel)]="homeCheckboxes[0]" (change)="homeClickOnCheckbox($event)">
-        <label class="form-check-label" for="checkWeb">
-            Una pàgina web (500 €)
-        </label>
-    </div>
+    <p class="fs-5">Què vols fer?</p>
 
-    <div class="form-check">
-        <input class="form-check-input" type="checkbox" value="" id="checkSeo" [(ngModel)]="homeCheckboxes[1]" (change)="homeClickOnCheckbox($event)">
-        <label class="form-check-label" for="checkSeo">
-            Una consultoria SEO (300 €)
-        </label>
-    </div>
+    <form>
 
-    <div class="form-check">
-        <input class="form-check-input" type="checkbox" value="" id="checkGAds" [(ngModel)]="homeCheckboxes[2]" (change)="homeClickOnCheckbox($event)">
-        <label class="form-check-label" for="checkGAds">
-            Una campanya de Google Ads (200 €)
-        </label>
-    </div>
+        <div class="form-check">
+            <input class="form-check-input" type="checkbox" id="checkWeb" [(ngModel)]="homeProducts.web.selected"
+                name="checkWeb" (change)="homeCalculateTotal()">
+            <label class="form-check-label" for="checkWeb">{{ homeProducts.web.title }}</label>
+        </div>
 
-    <p class="fs-5 mt-4">Preu: {{ homeTotal }}€ </p>
+        <app-panell *ngIf="homeProducts.web.selected" [panelBaseWebPrice]="homeProducts.web.price"></app-panell>
+
+        <div class="form-check">
+            <input class="form-check-input" type="checkbox" id="checkSeo" [(ngModel)]="homeProducts.seo.selected"
+                (change)="homeCalculateTotal()" name="checkSeo">
+            <label class="form-check-label" for="checkSeo">{{ homeProducts.seo.title }}</label>
+        </div>
+
+        <div class="form-check">
+            <input class="form-check-input" type="checkbox" id="checkGAds" [(ngModel)]="homeProducts.gads.selected"
+                (change)="homeCalculateTotal()" name="checkGAds">
+            <label class="form-check-label" for="checkGAds">{{ homeProducts.gads.title }}</label>
+        </div>
+
+    </form>
+
+    <p class="fs-5 mt-4">{{ homeGetTotalInEuros() }}</p>
 
 </div>
