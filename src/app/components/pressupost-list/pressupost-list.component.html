@@ -13,6 +13,15 @@
         (click)="setShowSorted(2)">
     <label class="btn btn-outline-primary" for="calendar-outlined"><i class="bi bi-calendar3 fs-5"></i></label>
 
+    <input #radiosearch type="radio" class="btn-check" name="options-outlined" id="search-outlined" autocomplete="off"
+        (click)="setShowSorted(3)" [checked]="isSearchSelected">
+    <label class="btn btn-outline-primary" for="search-outlined"><i class="bi bi-search fs-5"></i></label>
+
+    <div class="input-group">
+        <input type="text" class="form-control" id="inputSearchWord" [(ngModel)]="searchByName" (click)="clickSearch()">
+        <button class="btn btn-outline-danger" type="button" id="button-addon2" (click)="eraseSearchByName()"><i
+                class="bi bi-x-lg"></i></button>
+    </div>
 </div>
 <div class="overflow-div">
     <div class="list-group p-1">

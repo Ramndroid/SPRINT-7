@@ -9,26 +9,39 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./pressupost-list.component.css']
 })
 export class PressupostListComponent implements OnInit {
-
+  
   budgetListProductTitles = [
     "Disseny web",
     "Consultoría SEO",
     "Campanya de Google Ads"
   ];
 
-  showSortedBy:ShowInstructions = ShowInstructions.id_reverse;
+  showSortedBy: ShowInstructions = ShowInstructions.id_reverse;
 
-  constructor( private serviceGetTotalBudget: GetTotalBudgetService ) { }
+  isSearchSelected = false;
+
+  searchByName: string = "";
+
+  constructor(private serviceGetTotalBudget: GetTotalBudgetService) { }
 
   ngOnInit(): void { }
 
-  getBudgets = (): Budget[] => this.serviceGetTotalBudget.getBudgets(this.showSortedBy);
+  getBudgets = (): Budget[] => this.serviceGetTotalBudget.getBudgets(this.showSortedBy, this.searchByName);
 
   getBudgetsSize = (): number => this.serviceGetTotalBudget.getBudgetsSize();
 
   deleteBudget = (id: number): void => this.serviceGetTotalBudget.deleteBudget(id);
 
-  setShowSorted = (instruction: ShowInstructions):ShowInstructions => this.showSortedBy = instruction; 
-  
+  setShowSorted = (instruction: ShowInstructions): ShowInstructions => {
+    this.isSearchSelected = false;
+    return this.showSortedBy = instruction
+  };
+
+  eraseSearchByName = (): void => { this.searchByName = ""; }
+
+  clickSearch(): void {
+    this.setShowSorted(3);
+    this.isSearchSelected = true;
+  }
 
 }

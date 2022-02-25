@@ -1,7 +1,7 @@
 import { Budget } from './../models/budget';
 import { Injectable } from '@angular/core';
 import { Products } from '../models/products';
-import { getValueInEuros, reverseArray, sortByAlphabet, sortByDate } from './budgets-tools';
+import { getValueInEuros, reverseArray, sortByAlphabet, sortByDate, searchByName } from './budgets-tools';
 import { ShowInstructions } from '../models/show-instructions-enum';
 
 @Injectable({
@@ -90,22 +90,21 @@ export class GetTotalBudgetService {
     return true;
   }
 
-  deleteBudget(id: number) {
+  deleteBudget(id: number): void {
     const indexToDelete = this.budgets.findIndex(budget => budget.id == id);
     this.budgets.splice(indexToDelete, 1);
   }
 
-  getBudgets(instruction: ShowInstructions = ShowInstructions.id_reverse): Budget[] {
+  getBudgets(instruction: ShowInstructions = ShowInstructions.id_reverse, search: string = ""): Budget[] {
 
     const result: Budget[] = [...this.budgets];
-
+    
     switch (instruction) {
       case ShowInstructions.id_reverse: return reverseArray(result);
       case ShowInstructions.alphabet: return sortByAlphabet(result);
       case ShowInstructions.date: return sortByDate(result);
-      case ShowInstructions.search: break;
+      case ShowInstructions.search: return searchByName(result, search);
     }
-    return result;
   }
 
 }

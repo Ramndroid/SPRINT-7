@@ -19,3 +19,8 @@ export function sortByDate(budgets: Budget[]): Budget[] {
     return result;
 }
 
+export function searchByName(budgets: Budget[], search: string): Budget[] {
+    const result = budgets.filter(budget => budget.budgetName.toLocaleLowerCase().includes(search.toLocaleLowerCase()));
+    return result;
+}
+
