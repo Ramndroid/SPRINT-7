@@ -37,12 +37,12 @@ export class PanellComponent implements OnInit {
 
   ngOnInit(): void { }
 
-  panelSetQuantityPages(value: number) {
+  panelSetQuantityPages(value: number): void {
     this.panelQuantityPages = value;
     this.panelCalculateSubtotalWeb();
   }
 
-  panelSetQuantityLanguages(value: number) {
+  panelSetQuantityLanguages(value: number): void {
     this.panelQuantityLanguages = value;
     this.panelCalculateSubtotalWeb();
   }

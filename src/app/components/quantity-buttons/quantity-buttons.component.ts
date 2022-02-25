@@ -9,11 +9,12 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 export class QuantityButtonsComponent implements OnInit {
 
   @Input() quantityInformationTextButton: string = "";
+
   @Output() quantityButtonsPressedKey = new EventEmitter<number>();
 
   quantityInputValue: number = 1;
 
-  constructor(public modal: NgbModal) { }
+  constructor( public modal: NgbModal ) { }
 
   ngOnInit(): void {
     this.quantityButtonsPressedKey.emit(this.quantityInputValue);
@@ -31,16 +32,12 @@ export class QuantityButtonsComponent implements OnInit {
 
   }
 
-  quantityManualChange(value: string) {
+  quantityManualChange(value: string): void {
     const valueToInt = parseInt(value);
     if (!isNaN(valueToInt)) {
       this.quantityInputValue = valueToInt;
       this.quantityButtonsPressedKey.emit(this.quantityInputValue);
     }
-  }
-
-  showValue(value: any) {
-    console.log(typeof value, value);
   }
 
 }

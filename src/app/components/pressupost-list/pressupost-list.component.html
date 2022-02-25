@@ -1,0 +1,41 @@
+<p>Pressupostos generats ({{ getBudgetsSize() }})</p>
+<div class="overflow-div">
+    <div class="list-group p-1">
+        <div *ngFor="let budget of getBudgets()">
+            <a class="list-group-item list-group-item-action">
+                <div class="d-flex w-100 justify-content-between">
+                    <h5 class="mb-1">#{{ budget.id }}</h5>
+                    <small class="text-muted">{{ budget.date.toDateString() }}</small>
+                </div>
+
+                <div class="d-flex w-100 gap-2" *ngIf="budget.budgetName != '' ">
+                    <p class="mb-1 fs-6 fw-bold">Pressupost:</p>
+                    <p class="mb-1 fs-6 ">{{ budget.budgetName }}</p>
+                    <small class="text-muted"></small>
+                </div>
+                <div class="d-flex w-100 gap-2" *ngIf="budget.customerName != '' ">
+                    <p class="mb-1 fs-6 fw-bold">Client:</p>
+                    <p class="mb-1 fs-6 ">{{ budget.customerName }}</p>
+                </div>
+
+                <div class="d-flex w-100 gap-2">
+                    <p class="mb-1 fs-6 fw-bold">Total:</p>
+                    <p class="mb-1 fs-6 ">{{ budget.budgetTotal }}</p>
+                </div>
+                <p class="mb-1 fs-6 fw-bold"
+                    *ngIf="budget.hasProductWeb || budget.hasProductSeo || budget.hasProductGads">Serveis:</p>
+
+                <p class="ms-5 mb-1 fs-6" *ngIf="budget.hasProductWeb">{{budgetListProductTitles[0]}} ({{ budget.webNumberPages }}
+                    {{ (budget.webNumberPages == 0 || budget.webNumberPages > 1)? "pàgines" : "pàgina" }}, {{ budget.webNumberLanguages }} 
+                    {{ (budget.webNumberLanguages == 0 || budget.webNumberLanguages > 1) ? "idiomes" : "idioma" }})</p>
+                    
+                <p class="ms-5 mb-1 fs-6" *ngIf="budget.hasProductSeo">{{budgetListProductTitles[1]}}</p>
+                <p class="ms-5 mb-1 fs-6" *ngIf="budget.hasProductGads">{{budgetListProductTitles[2]}}</p>
+
+                <div class="d-flex justify-content-end">
+                    <button class="btn btn-outline-danger" (click)="deleteBudget(budget.id)">Eliminar</button>
+                </div>
+            </a>
+        </div>
+    </div>
+</div>

@@ -1,4 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { Budget } from './../../models/budget';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { Products } from 'src/app/models/products';
 import { GetTotalBudgetService } from 'src/app/services/get-total-budget.service';
 
@@ -8,6 +10,8 @@ import { GetTotalBudgetService } from 'src/app/services/get-total-budget.service
   styleUrls: ['./home.component.css']
 })
 export class HomeComponent implements OnInit {
+
+  @ViewChild('contenido') modalNoProductSelected?: ElementRef;
 
   homeProducts: Products = {
     web: {
@@ -27,7 +31,12 @@ export class HomeComponent implements OnInit {
     }
   }
 
+  homeBudgetName: string = "";
+
+  homeCustomerName: string = "";
+
   constructor(
+    private modal: NgbModal,
     private serviceGetTotalBudget: GetTotalBudgetService
   ) { }
 
@@ -37,4 +46,27 @@ export class HomeComponent implements OnInit {
 
   homeGetTotalInEuros = (): string => this.serviceGetTotalBudget.getTotalInEuros("Preu: ");
 
+  homeSaveBudget(): void {
+    const currentBudget = new Budget(
+      this.homeBudgetName,
+      this.homeCustomerName,
+      this.homeProducts.web.selected,
+      this.homeProducts.seo.selected,
+      this.homeProducts.gads.selected,
+      0, 0, // These values will be replaced in the ServiceGetTotalBudget.addNewBudget(...)
+      this.serviceGetTotalBudget.getTotalInEuros());
+
+    if (this.serviceGetTotalBudget.addNewBudget(currentBudget)){
+      this.modal.open(this.modalNoProductSelected);
+    }
+  }
+
+  homeEraseInputs(): void {
+    this.homeBudgetName = "";
+    this.homeCustomerName = "";
+    this.homeProducts.web.selected = false;
+    this.homeProducts.seo.selected = false;
+    this.homeProducts.gads.selected = false;
+    this.homeCalculateTotal();
+  }
 }

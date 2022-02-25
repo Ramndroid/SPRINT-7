@@ -1,20 +1,35 @@
+import { Budget } from './../models/budget';
 import { Injectable } from '@angular/core';
 import { Products } from '../models/products';
+import { getValueInEuros, reverseArray } from './budgets-tools';
+import { ShowInstructions } from '../models/show-instructions-enum';
 
 @Injectable({
   providedIn: 'root'
 })
 export class GetTotalBudgetService {
 
-  private hasOwnSubtotalWeb: boolean = false;
+  // Current budget values
   private subtotalWeb: number = 0;
   private subtotalSeo: number = 0;
   private subtotalGAds: number = 0;
   private totalBudget: number = 0;
+  private hasOwnSubtotalWeb: boolean = false;
+
+  // Currente budget - number of pages and languages
+  private numberOfPages: number = 0;
+  private numberOfLanguages: number = 0;
+
+  // Budget array
+  private budgets: Budget[] = [];
 
   constructor() { }
 
   setSubtotalWeb(basePrice: number = 0, websNumber: number = 0, languagesNumber: number = 0): void {
+
+    this.numberOfPages = websNumber;
+
+    this.numberOfLanguages = languagesNumber;
 
     if (websNumber > 0 && languagesNumber > 0) {
 
@@ -56,10 +71,44 @@ export class GetTotalBudgetService {
 
   getTotalInEuros(prevalue: string = ""): string {
     this.totalBudget = this.subtotalWeb + this.subtotalSeo + this.subtotalGAds;
-    const totalInEuros = this.getInEuros(this.totalBudget);
+    const totalInEuros = getValueInEuros(this.totalBudget);
     return `${prevalue}${totalInEuros}`;
   }
 
-  private getInEuros = (value: number): string => Intl.NumberFormat("de-DE", { style: "currency", currency: "EUR" }).format(value);
+  getBudgetsSize = (): number => this.budgets.length;
+
+  addNewBudget(budget: Budget): boolean {
+    budget.webNumberPages = this.numberOfPages;
+    budget.webNumberLanguages = this.numberOfLanguages;
+    const currentTotal = parseInt(budget.budgetTotal);
+    if (currentTotal > 0) {
+      Budget.addID();
+      budget.id = Budget.ids.valueOf();
+      this.budgets.push(budget);
+      return false;
+    }
+    return true;
+  }
+
+  deleteBudget(id: number) {
+    const indexToDelete = this.budgets.findIndex(budget => budget.id == id);
+    this.budgets.splice(indexToDelete, 1);
+  }
+
+  getBudgets(instruction: ShowInstructions = ShowInstructions.id): Budget[] {
+
+    const result: Budget[] = [...this.budgets];
+
+    switch (instruction) {
+      case ShowInstructions.id: return result;
+      case ShowInstructions.id_reverse: return reverseArray(result);
+      case ShowInstructions.alphabet: break;
+      case ShowInstructions.aplhabet_reverse: break;
+      case ShowInstructions.date: break;
+      case ShowInstructions.date_reverse: break;
+      case ShowInstructions.search: break;
+    }
+    return result;
+  }
 
 }

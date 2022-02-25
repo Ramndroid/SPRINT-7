@@ -1,39 +1,65 @@
-<div class="container-fluid mt-4">
+<nav class="navbar navbar-expand-lg navbar-light navbar-height bg-primary fixed-top shadow">
+    <div class="container-fluid">
+        <a class="navbar-brand text-white" href="#"><img class="navbar-brand" src="assets/btns/arrow-left.svg"
+                width="24">Tornar enrere</a>
+    </div>
+</nav>
 
-    <p class="fs-5">Què vols fer?</p>
+<div class="container-fluid">
+    <div class="d-flex flex-sm-column flex-md-row gap-5 px-5 pt-5">
+        <div class="w-100 pt-5">
+            <form>
+                <div class="mb-3">
+                    <label for="inputBudgetName" class="form-label">Nom del pressupost:</label>
+                    <input type="text" class="form-control" id="inputBudgetName" name="inputBudgetName"
+                        [(ngModel)]="homeBudgetName">
+                </div>
 
-    <form>
+                <div class="mb-3">
+                    <label for="inputClientName" class="form-label">Client:</label>
+                    <input type="text" class="form-control" id="inputClientName" name="inputClientName"
+                        [(ngModel)]="homeCustomerName">
+                </div>
 
-        <div class="form-check">
-            <input class="form-check-input" type="checkbox" id="checkWeb" [(ngModel)]="homeProducts.web.selected"
-                name="checkWeb" (change)="homeCalculateTotal()">
-            <label class="form-check-label" for="checkWeb">{{ homeProducts.web.title }}</label>
-        </div>
+                <p class="fs-5">Què vols fer?</p>
 
-        <app-panell *ngIf="homeProducts.web.selected" [panelBaseWebPrice]="homeProducts.web.price"></app-panell>
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" id="checkWeb"
+                        [(ngModel)]="homeProducts.web.selected" name="checkWeb" (change)="homeCalculateTotal()">
+                    <label class="form-check-label" for="checkWeb">{{ homeProducts.web.title }}</label>
+                </div>
 
-        <div class="form-check">
-            <input class="form-check-input" type="checkbox" id="checkSeo" [(ngModel)]="homeProducts.seo.selected"
-                (change)="homeCalculateTotal()" name="checkSeo">
-            <label class="form-check-label" for="checkSeo">{{ homeProducts.seo.title }}</label>
-        </div>
+                <app-panell *ngIf="homeProducts.web.selected" [panelBaseWebPrice]="homeProducts.web.price"></app-panell>
 
-        <div class="form-check">
-            <input class="form-check-input" type="checkbox" id="checkGAds" [(ngModel)]="homeProducts.gads.selected"
-                (change)="homeCalculateTotal()" name="checkGAds">
-            <label class="form-check-label" for="checkGAds">{{ homeProducts.gads.title }}</label>
-        </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" id="checkSeo"
+                        [(ngModel)]="homeProducts.seo.selected" (change)="homeCalculateTotal()" name="checkSeo">
+                    <label class="form-check-label" for="checkSeo">{{ homeProducts.seo.title }}</label>
+                </div>
 
-    </form>
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" id="checkGAds"
+                        [(ngModel)]="homeProducts.gads.selected" (change)="homeCalculateTotal()" name="checkGAds">
+                    <label class="form-check-label" for="checkGAds">{{ homeProducts.gads.title }}</label>
+                </div>
+            </form>
 
-    <p class="fs-5 mt-4">{{ homeGetTotalInEuros() }}</p>
+            <p class="fs-5 mt-4">{{ homeGetTotalInEuros() }}</p>
 
-    <div class="d-flex justify-content-center mt-5">
-        <div class="row">
-            <div class="col">
-                <a href="" class="btn btn-primary">Tornar enrere</a>
+            <div class="d-flex justify-content-center mt-5 gap-2">
+                <button class="btn btn-primary fw-bold text-light" (click)="homeSaveBudget()">Desar
+                    pressupost</button>
+                <button class="btn btn-primary fw-bold text-light" (click)="homeEraseInputs()">Esborrar camps</button>
             </div>
         </div>
-    </div>
 
+        <div class="w-100 pt-5 mb-sm-5 mb-md-0">
+            <app-pressupost-list></app-pressupost-list>
+        </div>
+
+    </div>
 </div>
+
+<ng-template #contenido let-modal>
+    <div class="modal-body">Cal seleccionar almenys un (1) producte.</div>
+</ng-template>
