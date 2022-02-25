@@ -33,7 +33,7 @@ export class PressupostListComponent implements OnInit {
   deleteBudget = (id: number): void => this.serviceGetTotalBudget.deleteBudget(id);
 
   setShowSorted = (instruction: ShowInstructions): ShowInstructions => {
-    this.isSearchSelected = false;
+    this.isSearchSelected = (instruction == ShowInstructions.search);    
     return this.showSortedBy = instruction
   };
 

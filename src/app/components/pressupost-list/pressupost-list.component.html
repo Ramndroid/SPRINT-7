@@ -34,7 +34,7 @@
 
                 <div class="d-flex w-100 gap-2" *ngIf="budget.budgetName != '' ">
                     <p class="mb-1 fs-6 fw-bold">Pressupost:</p>
-                    <p class="mb-1 fs-6 ">{{ budget.budgetName }}</p>
+                    <p class="mb-1 fs-6 " [ngClass]="isSearchSelected? 'selected':'noselected'">{{ budget.budgetName }}</p>
                     <small class="text-muted"></small>
                 </div>
                 <div class="d-flex w-100 gap-2" *ngIf="budget.customerName != '' ">
