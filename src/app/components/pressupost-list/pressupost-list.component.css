@@ -1,4 +1,4 @@
 .overflow-div {
-    overflow-y: scroll;
-    height: 650px;
+    overflow-y: auto;
+    height    : 650px;
 }

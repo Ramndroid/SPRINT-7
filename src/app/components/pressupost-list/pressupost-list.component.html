@@ -1,4 +1,19 @@
 <p>Pressupostos generats ({{ getBudgetsSize() }})</p>
+<div class="mx-1 mb-3 d-flex gap-2 justify-content-start">
+    <input type="radio" class="btn-check" name="options-outlined" id="id-rev-outlined" autocomplete="off" checked
+        (click)="setShowSorted(0)">
+    <label class="btn btn-outline-primary" for="id-rev-outlined"><i
+            class="bi bi-sort-numeric-down-alt fs-5"></i></label>
+
+    <input type="radio" class="btn-check" name="options-outlined" id="alpha-outlined" autocomplete="off"
+        (click)="setShowSorted(1)">
+    <label class="btn btn-outline-primary" for="alpha-outlined"><i class="bi bi-sort-alpha-down fs-5"></i></label>
+
+    <input type="radio" class="btn-check" name="options-outlined" id="calendar-outlined" autocomplete="off"
+        (click)="setShowSorted(2)">
+    <label class="btn btn-outline-primary" for="calendar-outlined"><i class="bi bi-calendar3 fs-5"></i></label>
+
+</div>
 <div class="overflow-div">
     <div class="list-group p-1">
         <div *ngFor="let budget of getBudgets()">
@@ -25,15 +40,19 @@
                 <p class="mb-1 fs-6 fw-bold"
                     *ngIf="budget.hasProductWeb || budget.hasProductSeo || budget.hasProductGads">Serveis:</p>
 
-                <p class="ms-5 mb-1 fs-6" *ngIf="budget.hasProductWeb">{{budgetListProductTitles[0]}} ({{ budget.webNumberPages }}
-                    {{ (budget.webNumberPages == 0 || budget.webNumberPages > 1)? "pàgines" : "pàgina" }}, {{ budget.webNumberLanguages }} 
+                <p class="ms-5 mb-1 fs-6" *ngIf="budget.hasProductWeb">{{budgetListProductTitles[0]}} ({{
+                    budget.webNumberPages }}
+                    {{ (budget.webNumberPages == 0 || budget.webNumberPages > 1)? "pàgines" : "pàgina" }}, {{
+                    budget.webNumberLanguages }}
                     {{ (budget.webNumberLanguages == 0 || budget.webNumberLanguages > 1) ? "idiomes" : "idioma" }})</p>
-                    
+
                 <p class="ms-5 mb-1 fs-6" *ngIf="budget.hasProductSeo">{{budgetListProductTitles[1]}}</p>
                 <p class="ms-5 mb-1 fs-6" *ngIf="budget.hasProductGads">{{budgetListProductTitles[2]}}</p>
 
                 <div class="d-flex justify-content-end">
-                    <button class="btn btn-outline-danger" (click)="deleteBudget(budget.id)">Eliminar</button>
+                    <button placement="left" ngbTooltip="Eliminar aquest pressupost" [openDelay]="800"
+                        [closeDelay]="500" class="btn btn-outline-danger" (click)="deleteBudget(budget.id)"><i
+                            class="bi bi-trash3"></i></button>
                 </div>
             </a>
         </div>

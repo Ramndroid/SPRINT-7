@@ -46,10 +46,13 @@
 
             <p class="fs-5 mt-4">{{ homeGetTotalInEuros() }}</p>
 
-            <div class="d-flex justify-content-center mt-5 gap-2">
-                <button class="btn btn-primary fw-bold text-light" (click)="homeSaveBudget()">Desar
-                    pressupost</button>
-                <button class="btn btn-primary fw-bold text-light" (click)="homeEraseInputs()">Esborrar camps</button>
+            <div class="d-flex justify-content-center mt-5 gap-3">
+                <button placement="bottom" ngbTooltip="Esborrar els camps" [openDelay]="800" [closeDelay]="500"
+                    class="buttons-current-budget" (click)="homeEraseInputs()"><i
+                        class="bi bi-trash3-fill fs-5"></i></button>
+                <button placement="bottom" ngbTooltip="Afegir nou pressupost" [openDelay]="800" [closeDelay]="500"
+                    class="buttons-current-budget" (click)="homeSaveBudget()"><i
+                        class="bi bi-plus-lg fs-4"></i></button>
             </div>
         </div>
 
