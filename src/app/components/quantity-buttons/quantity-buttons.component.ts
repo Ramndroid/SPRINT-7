@@ -26,6 +26,8 @@ export class QuantityButtonsComponent implements OnInit {
 
     if (valueTest >= 0) {
       this.quantityInputValue += value;
+    } else {
+      this.quantityInputValue = 1;
     }
 
     this.quantityButtonsPressedKey.emit(this.quantityInputValue);
