@@ -9,15 +9,21 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 export class QuantityButtonsComponent implements OnInit {
 
   @Input() quantityInformationTextButton: string = "";
-
+  
   @Output() quantityButtonsPressedKey = new EventEmitter<number>();
 
   quantityInputValue: number = 1;
 
-  constructor( public modal: NgbModal ) { }
+  constructor( public modal: NgbModal ) {
+    // this.quantityButtonsPressedKey.emit(5);
+    // this.quantityManualChange("5");
+  }
 
   ngOnInit(): void {
     this.quantityButtonsPressedKey.emit(this.quantityInputValue);
+    // this.quantityInputValue = 1;
+    // this.quantityManualChange("5");
+    
   }
 
   quantityChangeValue(value: number): void {

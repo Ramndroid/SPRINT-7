@@ -1,6 +1,6 @@
 <nav class="navbar navbar-expand-lg navbar-light navbar-height bg-primary fixed-top shadow">
     <div class="container-fluid">
-        <a class="navbar-brand text-white" href="#"><img class="navbar-brand" src="assets/btns/arrow-left.svg"
+        <a class="navbar-brand text-white" href=""><img class="navbar-brand" src="assets/btns/arrow-left.svg"
                 width="24">Tornar enrere</a>
     </div>
 </nav>
@@ -8,7 +8,7 @@
 <div class="container-fluid">
     <div class="d-flex flex-column flex-sm-column flex-md-row gap-5 px-5 pt-5">
         <div class="w-100 pt-5">
-            <form>
+            <form method="get">
                 <div class="mb-3">
                     <label for="inputBudgetName" class="form-label">Nom del pressupost:</label>
                     <input type="text" class="form-control" id="inputBudgetName" name="inputBudgetName"
@@ -29,7 +29,8 @@
                     <label class="form-check-label" for="checkWeb">{{ homeProducts.web.title }}</label>
                 </div>
 
-                <app-panell *ngIf="homeProducts.web.selected" [panelBaseWebPrice]="homeProducts.web.price"></app-panell>
+                <app-panell *ngIf="homeProducts.web.selected" 
+                [panelBaseWebPrice]="homeProducts.web.price"></app-panell>
 
                 <div class="form-check">
                     <input class="form-check-input" type="checkbox" id="checkSeo"
@@ -50,8 +51,8 @@
                 <button placement="bottom" ngbTooltip="Esborrar els camps" [openDelay]="800" [closeDelay]="500"
                     class="buttons-current-budget" (click)="homeEraseInputs()"><i
                         class="bi bi-trash3-fill fs-5"></i></button>
-                <button placement="bottom" ngbTooltip="Afegir nou pressupost" [openDelay]="800" [closeDelay]="500"
-                    class="buttons-current-budget" (click)="homeSaveBudget()"><i
+                <button type="submit" placement="bottom" ngbTooltip="Afegir nou pressupost" [openDelay]="800"
+                    [closeDelay]="500" class="buttons-current-budget" (click)="homeSaveBudget()"><i
                         class="bi bi-plus-lg fs-4"></i></button>
             </div>
         </div>

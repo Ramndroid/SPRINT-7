@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { Products } from '../models/products';
 import { getValueInEuros, reverseArray, sortByAlphabet, sortByDate, searchByName } from './budgets-tools';
 import { ShowInstructions } from '../models/show-instructions-enum';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
@@ -17,15 +18,15 @@ export class GetTotalBudgetService {
   private hasOwnSubtotalWeb: boolean = false;
 
   // Currente budget - number of pages and languages
-  private numberOfPages: number = 0;
-  private numberOfLanguages: number = 0;
+  public numberOfPages: number = 0;
+  public numberOfLanguages: number = 0;
 
   // Budget array
   private budgets: Budget[] = [];
 
   constructor() { }
 
-  setSubtotalWeb(basePrice: number = 0, websNumber: number = 0, languagesNumber: number = 0): void {
+  setSubtotalWebLegacy(basePrice: number = 0, websNumber: number = 0, languagesNumber: number = 0): void {
 
     this.numberOfPages = websNumber;
 
@@ -52,6 +53,33 @@ export class GetTotalBudgetService {
     this.hasOwnSubtotalWeb = !(basePrice == 0 && websNumber == 0 && languagesNumber == 0);
   }
 
+  setSubtotalWeb(basePrice: number = 0, websNumber: number = 0, languagesNumber: number = 0): void {
+
+    this.numberOfPages = websNumber;
+
+    this.numberOfLanguages = languagesNumber;
+
+    if (this.numberOfPages > 0 && this.numberOfLanguages > 0) {
+
+      this.subtotalWeb = (this.numberOfPages * this.numberOfLanguages * 30) + basePrice;
+
+    } else if (this.numberOfPages > 0 && this.numberOfLanguages <= 0) {
+
+      this.subtotalWeb = (this.numberOfPages * 30) + basePrice;
+
+    } else if (this.numberOfPages <= 0 && this.numberOfLanguages > 0) {
+
+      this.subtotalWeb = (this.numberOfLanguages * 30) + basePrice;
+
+    } else if (this.numberOfPages <= 0 && this.numberOfLanguages <= 0) {
+
+      this.subtotalWeb = basePrice;
+
+    }
+
+    this.hasOwnSubtotalWeb = !(basePrice == 0 && websNumber == 0 && languagesNumber == 0);
+  }
+
   calculateTotal(products: Products): void {
 
     if (products.web.selected) {
@@ -62,6 +90,7 @@ export class GetTotalBudgetService {
 
     } else {
       this.setSubtotalWeb();
+      // this.setSubtotalWeb(products.web.price, 1, 1);
     }
 
     this.subtotalSeo = products.seo.selected ? products.seo.price : 0;

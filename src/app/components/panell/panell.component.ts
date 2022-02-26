@@ -11,8 +11,6 @@ export class PanellComponent implements OnInit {
 
   @Input() panelBaseWebPrice: number = 0;
 
-  panellWebForm: FormGroup; // legacy de exercici 2 sense us en aquest exercici :(
-
   panelQuantityPages: number = 0;
 
   panelQuantityLanguages: number = 0;
@@ -25,24 +23,19 @@ export class PanellComponent implements OnInit {
   }
 
   constructor(
-    private _builder: FormBuilder, // legacy de exercici 2 sense us en aquest exercici :(
     private serviceGetTotalBudget: GetTotalBudgetService
-  ) {
-    // legacy de exercici 2 sense us en aquest exercici :(
-    this.panellWebForm = this._builder.group({
-      inputWebsTotal: ['1', Validators.compose([Validators.min(1), Validators.required])],
-      inputLanguagesTotal: ['1', Validators.compose([Validators.min(1), Validators.required])]
-    });
-  }
+  ) { }
 
   ngOnInit(): void { }
 
   panelSetQuantityPages(value: number): void {
+    this.serviceGetTotalBudget.numberOfPages = value;
     this.panelQuantityPages = value;
     this.panelCalculateSubtotalWeb();
   }
 
   panelSetQuantityLanguages(value: number): void {
+    this.serviceGetTotalBudget.numberOfLanguages = value;
     this.panelQuantityLanguages = value;
     this.panelCalculateSubtotalWeb();
   }
