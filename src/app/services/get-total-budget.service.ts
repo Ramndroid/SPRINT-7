@@ -11,109 +11,166 @@ import { ActivatedRoute, Router } from '@angular/router';
 export class GetTotalBudgetService {
 
   // Current budget values
-  private subtotalWeb: number = 0;
-  private subtotalSeo: number = 0;
-  private subtotalGAds: number = 0;
-  private totalBudget: number = 0;
-  private hasOwnSubtotalWeb: boolean = false;
+  public totalBudget: number = 0;
 
-  // Currente budget - number of pages and languages
-  public numberOfPages: number = 0;
-  public numberOfLanguages: number = 0;
+  public totalInEuros: string = "";
 
   // Budget array
   private budgets: Budget[] = [];
 
-  constructor() { }
+  // Products
+  homeProducts: Products = {
+    web: {
+      title: "Una pàgina web (desde 530 €)",
+      price: 500,
+      selected: false,
+      pages: 1,
+      languages: 1
+    },
+    seo: {
+      title: "Una consultoría SEO (300 €)",
+      price: 300,
+      selected: false
+    },
+    gads: {
+      title: "Una campanya de Google Ads (200 €)",
+      price: 200,
+      selected: false
+    }
+  }
 
-  setSubtotalWebLegacy(basePrice: number = 0, websNumber: number = 0, languagesNumber: number = 0): void {
+  constructor(    
+    private router: Router,
+    private _activatedRoute: ActivatedRoute,
+  ) {
+    this.homeGetParams();
+   }
 
-    this.numberOfPages = websNumber;
+  private homeSetParams() {
 
-    this.numberOfLanguages = languagesNumber;
+    this.router.navigate([], {
+      relativeTo: this._activatedRoute,
+      queryParams: {
+        paginaWeb: this.homeProducts.web.selected,
+        campaniaSeo: this.homeProducts.seo.selected,
+        campaniaAds: this.homeProducts.gads.selected,
+        nPaginas: this.homeProducts.web.pages,
+        nIdiomas: this.homeProducts.web.languages
+      },
+      queryParamsHandling: 'merge'
+    });
+    
+  }
 
-    if (websNumber > 0 && languagesNumber > 0) {
+  private homeGetParams() {
+    //http://localhost:4200/calculadora?paginaWeb=true&campaniaSeo=true&campaniaAds=true&nPaginas=5&nIdiomas=10
+    //http://localhost:4200/calculadora?paginaWeb=false&campaniaSeo=false&campaniaAds=false&nPaginas=1&nIdiomas=1
 
-      this.subtotalWeb = (websNumber * languagesNumber * 30) + basePrice;
+    let urlTree = this.router.parseUrl(this.router.url);
+    let paginaWeb: boolean = urlTree.queryParams['paginaWeb'] === "true";
+    let campaniaSeo: boolean = urlTree.queryParams['campaniaSeo'] === "true";
+    let campaniaAds: boolean = urlTree.queryParams['campaniaAds'] === "true";
 
-    } else if (websNumber > 0 && languagesNumber <= 0) {
+    this.homeProducts.web.selected = paginaWeb;
+    this.homeProducts.seo.selected = campaniaSeo;
+    this.homeProducts.gads.selected = campaniaAds;
 
-      this.subtotalWeb = (websNumber * 30) + basePrice;
 
-    } else if (websNumber <= 0 && languagesNumber > 0) {
+    let paginas: number = parseInt(urlTree.queryParams['nPaginas']);
+    let idiomas: number = parseInt(urlTree.queryParams['nIdiomas']);
 
-      this.subtotalWeb = (languagesNumber * 30) + basePrice;
+    if (!isNaN(paginas))
+      this.homeProducts.web.pages = paginas;
 
-    } else if (websNumber <= 0 && languagesNumber <= 0) {
+    if (!isNaN(idiomas))
+      this.homeProducts.web.languages = idiomas;
 
-      this.subtotalWeb = basePrice;
+    this.calculateTotal();
+  }
+
+  private setSubtotalWeb(): number {
+
+
+    if (this.homeProducts.web.pages > 0 && this.homeProducts.web.languages > 0) {
+
+      return (this.homeProducts.web.pages * this.homeProducts.web.languages * 30) + this.homeProducts.web.price;
+
+    } else if (this.homeProducts.web.pages > 0 && this.homeProducts.web.languages <= 0) {
+
+      return (this.homeProducts.web.pages * 30) + this.homeProducts.web.price;
+
+    } else if (this.homeProducts.web.pages <= 0 && this.homeProducts.web.languages > 0) {
+
+      return (this.homeProducts.web.languages * 30) + this.homeProducts.web.price;
+
+    } else if (this.homeProducts.web.pages <= 0 && this.homeProducts.web.languages <= 0) {
+
+      return this.homeProducts.web.price;
 
     }
 
-    this.hasOwnSubtotalWeb = !(basePrice == 0 && websNumber == 0 && languagesNumber == 0);
+    return 0;
+
   }
 
-  setSubtotalWeb(basePrice: number = 0, websNumber: number = 0, languagesNumber: number = 0): void {
+  calculateTotal(): number {
 
-    this.numberOfPages = websNumber;
+    let arrts: number;
 
-    this.numberOfLanguages = languagesNumber;
-
-    if (this.numberOfPages > 0 && this.numberOfLanguages > 0) {
-
-      this.subtotalWeb = (this.numberOfPages * this.numberOfLanguages * 30) + basePrice;
-
-    } else if (this.numberOfPages > 0 && this.numberOfLanguages <= 0) {
-
-      this.subtotalWeb = (this.numberOfPages * 30) + basePrice;
-
-    } else if (this.numberOfPages <= 0 && this.numberOfLanguages > 0) {
-
-      this.subtotalWeb = (this.numberOfLanguages * 30) + basePrice;
-
-    } else if (this.numberOfPages <= 0 && this.numberOfLanguages <= 0) {
-
-      this.subtotalWeb = basePrice;
-
-    }
-
-    this.hasOwnSubtotalWeb = !(basePrice == 0 && websNumber == 0 && languagesNumber == 0);
-  }
-
-  calculateTotal(products: Products): void {
-
-    if (products.web.selected) {
-
-      if (!this.hasOwnSubtotalWeb) {
-        this.setSubtotalWeb(products.web.price, 1, 1);
-      }
-
+    if (this.homeProducts.web.selected) {
+      arrts = this.setSubtotalWeb();
     } else {
-      this.setSubtotalWeb();
-      // this.setSubtotalWeb(products.web.price, 1, 1);
+      arrts = 0;
+      this.homeProducts.web.pages = 1;
+      this.homeProducts.web.languages = 1;
     }
 
-    this.subtotalSeo = products.seo.selected ? products.seo.price : 0;
 
-    this.subtotalGAds = products.gads.selected ? products.gads.price : 0;
+    const subtotalWeb = this.homeProducts.web.selected ? this.setSubtotalWeb() : 0;
+
+    const subtotalSeo = this.homeProducts.seo.selected ? this.homeProducts.seo.price : 0;
+
+    const subtotalGAds = this.homeProducts.gads.selected ? this.homeProducts.gads.price : 0;
+
+    this.totalBudget = subtotalWeb + subtotalSeo + subtotalGAds;
+
+    this.totalInEuros = getValueInEuros(this.totalBudget);
+
+    this.homeSetParams();
+    
+    // console.log(this.totalBudget);
+
+
+    return this.totalBudget;
   }
 
   getTotalInEuros(prevalue: string = ""): string {
-    this.totalBudget = this.subtotalWeb + this.subtotalSeo + this.subtotalGAds;
     const totalInEuros = getValueInEuros(this.totalBudget);
     return `${prevalue}${totalInEuros}`;
   }
 
   getBudgetsSize = (): number => this.budgets.length;
 
-  addNewBudget(budget: Budget): boolean {
-    budget.webNumberPages = this.numberOfPages;
-    budget.webNumberLanguages = this.numberOfLanguages;
-    const currentTotal = parseInt(budget.budgetTotal);
+  addNewBudget(budgetName: string, customarName: string): boolean {
+
+
+    const currentBudget = new Budget(
+      budgetName,
+      customarName,
+      this.homeProducts.web.selected,
+      this.homeProducts.seo.selected,
+      this.homeProducts.gads.selected,
+      this.homeProducts.web.pages,
+      this.homeProducts.web.languages,
+      this.getTotalInEuros()
+    );
+
+    const currentTotal = parseInt(currentBudget.budgetTotal);
+
     if (currentTotal > 0) {
       Budget.addID();
-      budget.id = Budget.ids.valueOf();
-      this.budgets.push(budget);
+      currentBudget.id = Budget.ids.valueOf();
+      this.budgets.push(currentBudget);
       return false;
     }
     return true;
@@ -127,7 +184,7 @@ export class GetTotalBudgetService {
   getBudgets(instruction: ShowInstructions = ShowInstructions.id_reverse, search: string = ""): Budget[] {
 
     const result: Budget[] = [...this.budgets];
-    
+
     switch (instruction) {
       case ShowInstructions.id_reverse: return reverseArray(result);
       case ShowInstructions.alphabet: return sortByAlphabet(result);

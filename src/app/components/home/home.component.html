@@ -8,7 +8,7 @@
 <div class="container-fluid">
     <div class="d-flex flex-column flex-sm-column flex-md-row gap-5 px-5 pt-5">
         <div class="w-100 pt-5">
-            <form method="get">
+            <form (change)="serviceGetTotalBudget.calculateTotal()">
                 <div class="mb-3">
                     <label for="inputBudgetName" class="form-label">Nom del pressupost:</label>
                     <input type="text" class="form-control" id="inputBudgetName" name="inputBudgetName"
@@ -25,27 +25,27 @@
 
                 <div class="form-check">
                     <input class="form-check-input" type="checkbox" id="checkWeb"
-                        [(ngModel)]="homeProducts.web.selected" name="checkWeb" (change)="homeCalculateTotal()">
-                    <label class="form-check-label" for="checkWeb">{{ homeProducts.web.title }}</label>
+                        [(ngModel)]="serviceGetTotalBudget.homeProducts.web.selected" name="checkWeb">
+                    <label class="form-check-label" for="checkWeb">{{ serviceGetTotalBudget.homeProducts.web.title }}</label>
                 </div>
 
-                <app-panell *ngIf="homeProducts.web.selected" 
-                [panelBaseWebPrice]="homeProducts.web.price"></app-panell>
+                <app-panell *ngIf="serviceGetTotalBudget.homeProducts.web.selected" 
+                [panelBaseWebPrice]="serviceGetTotalBudget.homeProducts.web.price"></app-panell>
 
                 <div class="form-check">
                     <input class="form-check-input" type="checkbox" id="checkSeo"
-                        [(ngModel)]="homeProducts.seo.selected" (change)="homeCalculateTotal()" name="checkSeo">
-                    <label class="form-check-label" for="checkSeo">{{ homeProducts.seo.title }}</label>
+                        [(ngModel)]="serviceGetTotalBudget.homeProducts.seo.selected" name="checkSeo">
+                    <label class="form-check-label" for="checkSeo">{{ serviceGetTotalBudget.homeProducts.seo.title }}</label>
                 </div>
 
                 <div class="form-check">
                     <input class="form-check-input" type="checkbox" id="checkGAds"
-                        [(ngModel)]="homeProducts.gads.selected" (change)="homeCalculateTotal()" name="checkGAds">
-                    <label class="form-check-label" for="checkGAds">{{ homeProducts.gads.title }}</label>
+                        [(ngModel)]="serviceGetTotalBudget.homeProducts.gads.selected" name="checkGAds">
+                    <label class="form-check-label" for="checkGAds">{{ serviceGetTotalBudget.homeProducts.gads.title }}</label>
                 </div>
             </form>
 
-            <p class="fs-5 mt-4">{{ homeGetTotalInEuros() }}</p>
+            <p class="fs-5 mt-4">{{ serviceGetTotalBudget.totalInEuros }}</p>
 
             <div class="d-flex justify-content-center mt-5 gap-3">
                 <button placement="bottom" ngbTooltip="Esborrar els camps" [openDelay]="800" [closeDelay]="500"

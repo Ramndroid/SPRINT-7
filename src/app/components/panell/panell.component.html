@@ -3,14 +3,16 @@
     <div class="mx-3 d-flex align-items-baseline gap-1">
         <p>Nombre de pàgines</p>
         <app-quantity-buttons [quantityInformationTextButton]="panelInfoTextModal.pages"
-            (quantityButtonsPressedKey)="panelSetQuantityPages($event)">
+        [quantityPreValue]="panelInputPages"    
+        (quantityButtonsPressedKey)="panelSetQuantityPages($event)">
         </app-quantity-buttons>
     </div>
 
     <div class="mx-3 d-flex align-items-baseline gap-1">
         <p>Nombre d'idiomes</p>
         <app-quantity-buttons [quantityInformationTextButton]="panelInfoTextModal.languages"
-            (quantityButtonsPressedKey)="panelSetQuantityLanguages($event)"></app-quantity-buttons>
+        [quantityPreValue]="panelInputLanguages"     
+        (quantityButtonsPressedKey)="panelSetQuantityLanguages($event)"></app-quantity-buttons>
     </div>
 
     <div class="text-danger align-self-end mx-3 text-end" *ngIf="panelInvalidForm">

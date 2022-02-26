@@ -1,6 +1,5 @@
 import { GetTotalBudgetService } from './../../services/get-total-budget.service';
 import { Component, Input, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-panell',
@@ -11,9 +10,9 @@ export class PanellComponent implements OnInit {
 
   @Input() panelBaseWebPrice: number = 0;
 
-  panelQuantityPages: number = 0;
+  panelInputPages: number = 0;
 
-  panelQuantityLanguages: number = 0;
+  panelInputLanguages: number = 0;
 
   panelInvalidForm: boolean = false;
 
@@ -24,27 +23,26 @@ export class PanellComponent implements OnInit {
 
   constructor(
     private serviceGetTotalBudget: GetTotalBudgetService
-  ) { }
+  ) { 
+    this.panelInputPages = this.serviceGetTotalBudget.homeProducts.web.pages;
+    this.panelInputLanguages = this.serviceGetTotalBudget.homeProducts.web.languages;
+  }
 
   ngOnInit(): void { }
 
   panelSetQuantityPages(value: number): void {
-    this.serviceGetTotalBudget.numberOfPages = value;
-    this.panelQuantityPages = value;
+    this.serviceGetTotalBudget.homeProducts.web.pages = value;
     this.panelCalculateSubtotalWeb();
   }
 
   panelSetQuantityLanguages(value: number): void {
-    this.serviceGetTotalBudget.numberOfLanguages = value;
-    this.panelQuantityLanguages = value;
+    this.serviceGetTotalBudget.homeProducts.web.languages = value;
     this.panelCalculateSubtotalWeb();
   }
 
-  panelCalculateSubtotalWeb(): void {
-    this.panelInvalidForm = (this.panelQuantityPages == 0 || this.panelQuantityLanguages == 0);
-    this.serviceGetTotalBudget.setSubtotalWeb(
-      this.panelBaseWebPrice, this.panelQuantityPages, this.panelQuantityLanguages
-    );
+  private panelCalculateSubtotalWeb(): void {
+    this.panelInvalidForm = (this.serviceGetTotalBudget.homeProducts.web.pages == 0 || this.serviceGetTotalBudget.homeProducts.web.languages == 0);
+    this.serviceGetTotalBudget.calculateTotal();
   }
 
 }
