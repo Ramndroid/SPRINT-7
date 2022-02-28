@@ -1,0 +1,87 @@
+<!-- Menú de navegación -->
+<nav class="navbar navbar-expand-lg navbar-light bg-primary fixed-top shadow">
+    <div class="container-fluid">
+        <a class="navbar-brand text-white" href=""><i class="bi bi-arrow-left fs-5 me-2"></i>Tornar enrere</a>
+    </div>
+</nav>
+
+<!-- Contenido principal -->
+<div class="container-fluid">
+    <div class="d-flex flex-column flex-sm-column flex-md-row gap-5 px-5 pt-5">
+
+        <!-- Campos para calcular o añadir un nuevo presupuesto -->
+        <div class="w-100 pt-5">
+            <form (change)="serviceBudget.calculateTotal()">
+
+                <!-- Nombre del presupuesto -->
+                <div class="mb-3">
+                    <label for="inputBudgetName" class="form-label">Nom del pressupost:</label>
+                    <input type="text" class="form-control" id="inputBudgetName" name="inputBudgetName"
+                        [(ngModel)]="homeBudgetName">
+                </div>
+
+                <!-- Nombre del cliente del presupuesto -->
+                <div class="mb-3">
+                    <label for="inputClientName" class="form-label">Client:</label>
+                    <input type="text" class="form-control" id="inputClientName" name="inputClientName"
+                        [(ngModel)]="homeCustomerName">
+                </div>
+
+                <!-- Rótulo -->
+                <p class="fs-5">Què vols fer?</p>
+
+                <!-- Producto: web -->
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" id="checkWeb" name="checkWeb"
+                        [(ngModel)]="serviceBudget.products.web.selected">
+                    <label class="form-check-label" for="checkWeb">
+                        {{ serviceBudget.products.web.title }}</label>
+                </div>
+
+                <!-- Panel de modificación de las características de la web -->
+                <app-panell *ngIf="serviceBudget.products.web.selected"></app-panell>
+
+                <!-- Producto: SEO -->
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" id="checkSeo" name="checkSeo"
+                        [(ngModel)]="serviceBudget.products.seo.selected">
+                    <label class="form-check-label" for="checkSeo">
+                        {{ serviceBudget.products.seo.title }}</label>
+                </div>
+
+                <!-- Producto: Google Ads -->
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" id="checkGAds" name="checkGAds"
+                        [(ngModel)]="serviceBudget.products.gads.selected">
+                    <label class="form-check-label" for="checkGAds">
+                        {{ serviceBudget.products.gads.title }}</label>
+                </div>
+            </form>
+
+            <!-- Total del presupuesto actual -->
+            <p class="fs-5 mt-4">Preu: {{ serviceBudget.totalInEuros }}</p>
+
+            <!-- Botones: Añadir el presupuesto a la lista / Borrar campos actuales -->
+            <div class="d-flex justify-content-center mt-5 gap-3">
+                <button placement="bottom" ngbTooltip="Esborrar els camps" [openDelay]="800" [closeDelay]="500"
+                    class="buttons-current-budget bg-primary"
+                    (click)="homeEraseFields()"><i class="bi bi-trash3-fill fs-5"></i></button>
+
+                <button type="submit" placement="bottom" ngbTooltip="Afegir nou pressupost" [openDelay]="800"
+                    [closeDelay]="500" class="buttons-current-budget bg-primary"
+                    (click)="homeSaveBudget()"><i class="bi bi-plus-lg fs-4"></i></button>
+            </div>
+        </div>
+
+        <!-- Lista de presupuestos generados -->
+        <div class="w-100 pt-5 mb-sm-5 mb-md-0">
+            <app-pressupost-list></app-pressupost-list>
+        </div>
+
+    </div>
+</div>
+
+<!-- Modal: salta cuando intentamos añadir un presupuesto sin ningún producto seleccionado  -->
+<ng-template #modal let-modal>
+    <div class="modal-body">Cal seleccionar almenys un (1) producte.</div>
+</ng-template>

@@ -1,0 +1,27 @@
+<div class="d-flex">
+
+    <!-- Boton +1 -->
+    <button class="btn-quantity"
+        (click)="quantityChangeValue(1)"> <img class="img-quantity" src="assets/btns/btn-plus.svg"></button>
+
+    <!-- Cantidad emitida por el componente -->
+    <input #username type="number" id="username" name="username" 
+        [(ngModel)]="quantityOutputValue"
+        (keyup)="quantityManualChange((username.value))">
+
+    <!-- Botón -1 -->
+    <button class="btn-quantity"
+        (click)="quantityChangeValue(-1)"> <img class="img-quantity" src="assets/btns/btn-minus.svg"></button>
+
+    <!-- Botón info -->
+    <button type="button" class="btn-quantity ms-2"
+        (click)="openModal()"> <i class="bi bi-info-circle-fill fs-5"></i></button>
+
+</div>
+
+<!-- Modal: ofrece información acerca de qué hace cada bloque de botones -->
+<ng-template #modal let-modal>
+    <div class="modal-body">
+        {{ quantityInformationTextButton }}
+    </div>
+</ng-template>

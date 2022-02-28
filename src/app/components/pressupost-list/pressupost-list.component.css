@@ -1,0 +1,27 @@
+.overflow-div {
+    overflow-y: auto;
+    height    : 650px;
+}
+
+.selected {
+    background-color: yellow;
+}
+
+.noselected {
+    background-color: transparent;
+}
+
+a {
+    border: none;
+    transition: .2s ease-in-out;
+}
+
+a:hover {
+    transform: scale3d(1.01, 1.01, 1.01);
+    background-color: rgba(255, 255, 0, 0.116);
+}
+
+a:active {
+    background-color: rgba(255, 255, 0, 0.322);
+}
+

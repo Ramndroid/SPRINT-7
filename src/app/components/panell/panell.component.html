@@ -1,0 +1,29 @@
+<form class="modal-content my-3 py-5 d-flex flex-column gap-1">
+
+    <!-- Número de páginas de la web -->
+    <div class="mx-3 d-flex align-items-baseline gap-1">
+        <p>Nombre de pàgines</p>
+        <app-quantity-buttons 
+            [quantityInformationTextButton]="panelInvalidFormInfoModalText.pages"
+            [quantityPreValue]="panelNPages" 
+            (quantityButtonPressed)="panelSetQuantityPages($event)">
+        </app-quantity-buttons>
+    </div>
+
+    <!-- Número de idiomas de la web -->
+    <div class="mx-3 d-flex align-items-baseline gap-1">
+        <p>Nombre d'idiomes</p>
+        <app-quantity-buttons 
+            [quantityInformationTextButton]="panelInvalidFormInfoModalText.languages"
+            [quantityPreValue]="panelNLanguages"
+            (quantityButtonPressed)="panelSetQuantityLanguages($event)">
+        </app-quantity-buttons>
+    </div>
+
+    <!-- Aviso acerca del uso de parámetros no válidos -->
+    <div class="text-danger align-self-end mx-3 text-end" *ngIf="panelInvalidForm">
+        <b>Paràmetres no válids:</b> mínim d'una (1) pàgina i d'un (1) idioma.<br> <i>Sense paràmetres vàlids el
+            pressupost no serà vinculant.</i>
+    </div>
+
+</form>
