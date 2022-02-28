@@ -1,4 +1,4 @@
-import { GetTotalBudgetService } from './services/get-total-budget.service';
+import { BudgetsService } from './services/get-total-budget.service';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
@@ -29,7 +29,7 @@ import { PressupostListComponent } from './components/pressupost-list/pressupost
     NgbModule
   ],
   providers: [
-    GetTotalBudgetService
+    BudgetsService
   ],
   bootstrap: [AppComponent]
 })

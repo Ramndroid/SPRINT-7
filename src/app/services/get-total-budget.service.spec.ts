@@ -1,13 +1,13 @@
 import { TestBed } from '@angular/core/testing';
 
-import { GetTotalBudgetService } from './get-total-budget.service';
+import { BudgetsService } from './get-total-budget.service';
 
 describe('GetTotalBudgetService', () => {
-  let service: GetTotalBudgetService;
+  let service: BudgetsService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    service = TestBed.inject(GetTotalBudgetService);
+    service = TestBed.inject(BudgetsService);
   });
 
   it('should be created', () => {

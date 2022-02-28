@@ -1,3 +1,6 @@
+/**
+ * Interface Products: referéncia de los productos disponibles y su estado en el presupuesto actual. 
+ */
 export interface Products {
     web: {
         title: string

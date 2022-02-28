@@ -24,6 +24,6 @@ input[type=number] { -moz-appearance:textfield; }
   width: 32px;
 }
 
-.img-info {
-  width: 24px;
+i {
+  color: #b0b0ae;
 }
