@@ -1,6 +1,10 @@
 # SPRINT7
 
+![Mapa conceputal de componentes](https://github.com/Ramndroid/SPRINT-7/blob/nivell-3/src/assets/sprint-7.png)
+
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 13.2.2.
+
+
 
 ## Development server
 
