@@ -15,7 +15,7 @@ import { Observable, Subject } from 'rxjs';
 @Injectable({
   providedIn: 'root'
 })
-export class BudgetsService implements OnInit, AfterContentInit {
+export class BudgetsService {
 
   /**
    * Total del presupuesto actula en euros (string).
@@ -82,26 +82,16 @@ export class BudgetsService implements OnInit, AfterContentInit {
     private router: Router,
     private _activatedRoute: ActivatedRoute,
   ) {
-    this.getParams();
-    this.getLocalStorage();
+
     this.npages$ = new Subject();
     this.nlanguages$ = new Subject();
     this.budgetName$ = new Subject();
     this.customerName$ = new Subject();
+
+    this.getParams();
+    this.getLocalStorage();
     // this.budgetName = "";
     // this.customerName = "";
-  }
-  ngAfterContentInit(): void {
-    // this.getParams();
-    // this.getLocalStorage();
-    // this.budgetName$.next(this.budgetName);
-    
-  }
-
-  ngOnInit(): void {
-    // this.getParams();
-    // this.getLocalStorage();
-    // this.budgetName$.next(this.budgetName);
   }
 
   getBudgetName$(): Observable<string> {
@@ -120,10 +110,6 @@ export class BudgetsService implements OnInit, AfterContentInit {
     return this.nlanguages$.asObservable();
   }
 
-  private modBudgetName(name: string) {
-    // this.budgetName = name;
-    // this.budgetName$.next(name);
-  }
   /**
    * Obtiene los parámtetros de la URL y los inyecta en 'products'.
    */
@@ -144,7 +130,7 @@ export class BudgetsService implements OnInit, AfterContentInit {
     // this.customerName$.next(customerName);
     // this.budgetName = budgetName;
     // if (budgetName !== undefined) {
-      // this.budgetName$.next(budgetName);
+    // this.budgetName$.next(budgetName);
 
     // }
     // this.customerName = customerName;
@@ -156,11 +142,15 @@ export class BudgetsService implements OnInit, AfterContentInit {
     let paginas: number = parseInt(urlTree.queryParams['nPaginas']);
     let idiomas: number = parseInt(urlTree.queryParams['nIdiomas']);
 
-    if (!isNaN(paginas))
+    if (!isNaN(paginas)) {
       this.products.web.pages = paginas;
+      this.npages$.next(paginas);
+    }
 
-    if (!isNaN(idiomas))
+    if (!isNaN(idiomas)) {
       this.products.web.languages = idiomas;
+      this.nlanguages$.next(idiomas);
+    }
 
     this.calculateTotal();
     // this.budgetName$.next("ramon");
@@ -351,23 +341,9 @@ export class BudgetsService implements OnInit, AfterContentInit {
     this.products.web.languages = 1;
     this.products.seo.selected = false;
     this.products.gads.selected = false;
+    this.npages$.next(1);
+    this.nlanguages$.next(1);
   }
-
-  /**
-   * Obtener el número de páginas en el presupuesto actual.
-   * 
-   * @returns Number - Número de páginas del presupuesto actual almacenadas en 'products'.
-   */
-  getNPages = (): number => this.products.web.pages;
-
-
-
-  /**
-   * Obtener el número de idiomas en el presupuesto actual.
-   * 
-   * @returns Number - Número de idiomas del presupuesto actual almacenados en 'products'.
-   */
-  getNLanguages = (): number => this.products.web.languages;
 
   /**
    * Modifica el número de páginas a presupuestar.
@@ -376,6 +352,9 @@ export class BudgetsService implements OnInit, AfterContentInit {
    */
   setNPages(value: number): void {
     this.products.web.pages = value;
+    // this.npages$.next(value);
+
+
   }
 
   /**
@@ -385,6 +364,7 @@ export class BudgetsService implements OnInit, AfterContentInit {
    */
   setNLanguages(value: number): void {
     this.products.web.languages = value;
+    // this.nlanguages$.next(value);
   }
 
   /**

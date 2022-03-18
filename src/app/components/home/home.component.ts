@@ -59,7 +59,6 @@ export class HomeComponent implements OnInit, OnDestroy {
       .subscribe(
         (name: string) => {
           this.homeBudgetName = name;
-          // this.serviceBudget.budgetName = name;
         }
       );
 
@@ -76,7 +75,6 @@ export class HomeComponent implements OnInit, OnDestroy {
    */
   homeEraseFields(): void {
     this.homeBudgetName = "";
-    // this.serviceBudget.budgetName = "";
     this.homeCustomerName = "";
     this.serviceBudget.eraseFields();
     this.serviceBudget.calculateTotal();
@@ -94,6 +92,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   homeSaveBudget(): void {
     if (!this.serviceBudget.addNewBudget(this.homeBudgetName, this.homeCustomerName))
       this.modal.open(this.homeModalNoProductsSelected);
+    this.homeEraseFields();
   }
 
 }

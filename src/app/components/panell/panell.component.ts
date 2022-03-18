@@ -53,12 +53,13 @@ export class PanellComponent implements OnInit, OnDestroy {
   constructor(
     private serviceBudget: BudgetsService
   ) {
-    this.panelNPages = this.serviceBudget.getNPages();
-    this.panelNLanguages = this.serviceBudget.getNLanguages();
+    this.panelNPages = this.serviceBudget.products.web.pages;
+    this.panelNLanguages = this.serviceBudget.products.web.languages;
     this.panelNPages$ = new Subscription;
     this.panelNLanguages$ = new Subscription;
   }
 
+ 
   ngOnInit(): void {
     this.panelNPages$ = this.serviceBudget.getNPages$()
       .subscribe(
