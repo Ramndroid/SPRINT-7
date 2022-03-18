@@ -1,10 +1,11 @@
 import { Budget } from './../models/budget';
-import { Injectable } from '@angular/core';
+import { AfterContentInit, Injectable, OnInit } from '@angular/core';
 import { Products } from '../models/products';
 import { reverseArray, sortByAlphabet, sortByDate, searchByName } from './sort-and-search-tools';
 import { getValueInEuros } from './show-value-in-euros';
 import { ShowBudgetsInstructions } from '../models/show-budgets-enum';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Observable, Subject } from 'rxjs';
 
 /**
  * Servicio principal de la aplicación.
@@ -14,7 +15,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 @Injectable({
   providedIn: 'root'
 })
-export class BudgetsService {
+export class BudgetsService implements OnInit, AfterContentInit {
 
   /**
    * Total del presupuesto actula en euros (string).
@@ -58,6 +59,18 @@ export class BudgetsService {
    */
   private budgets: Budget[] = [];
 
+  private budgetName$: Subject<string>;
+
+  private customerName$: Subject<string>;
+
+  private npages$: Subject<number>;
+
+  private nlanguages$: Subject<number>;
+
+  // budgetName: string;
+
+  // customerName: string;
+
   /**
    * Constructor.
    * Recupera datos (Budget[]) guardados en otras sesiones.
@@ -71,16 +84,70 @@ export class BudgetsService {
   ) {
     this.getParams();
     this.getLocalStorage();
+    this.npages$ = new Subject();
+    this.nlanguages$ = new Subject();
+    this.budgetName$ = new Subject();
+    this.customerName$ = new Subject();
+    // this.budgetName = "";
+    // this.customerName = "";
+  }
+  ngAfterContentInit(): void {
+    // this.getParams();
+    // this.getLocalStorage();
+    // this.budgetName$.next(this.budgetName);
+    
   }
 
+  ngOnInit(): void {
+    // this.getParams();
+    // this.getLocalStorage();
+    // this.budgetName$.next(this.budgetName);
+  }
+
+  getBudgetName$(): Observable<string> {
+    return this.budgetName$.asObservable();
+  }
+
+  getCustomerName$(): Observable<string> {
+    return this.customerName$.asObservable();
+  }
+
+  getNPages$(): Observable<number> {
+    return this.npages$.asObservable();
+  }
+
+  getNLanguages$(): Observable<number> {
+    return this.nlanguages$.asObservable();
+  }
+
+  private modBudgetName(name: string) {
+    // this.budgetName = name;
+    // this.budgetName$.next(name);
+  }
   /**
    * Obtiene los parámtetros de la URL y los inyecta en 'products'.
    */
-  private getParams() {
+  private getParams(): void {
     let urlTree = this.router.parseUrl(this.router.url);
+    // let budgetName: string = urlTree.queryParams['budget'] === undefined ? "noname" : urlTree.queryParams['budget'];
+    // let customerName: string = urlTree.queryParams['customer'];
     let paginaWeb: boolean = urlTree.queryParams['paginaWeb'] === "true";
     let campaniaSeo: boolean = urlTree.queryParams['campaniaSeo'] === "true";
     let campaniaAds: boolean = urlTree.queryParams['campaniaAds'] === "true";
+
+    // console.log(budgetName);
+    // this.modBudgetName(budgetName);
+    // this.budgetName$.next(budgetName);
+    // this.budgetName = budgetName;
+
+
+    // this.customerName$.next(customerName);
+    // this.budgetName = budgetName;
+    // if (budgetName !== undefined) {
+      // this.budgetName$.next(budgetName);
+
+    // }
+    // this.customerName = customerName;
 
     this.products.web.selected = paginaWeb;
     this.products.seo.selected = campaniaSeo;
@@ -96,15 +163,18 @@ export class BudgetsService {
       this.products.web.languages = idiomas;
 
     this.calculateTotal();
+    // this.budgetName$.next("ramon");
   }
 
   /**
    * Modifica los parámetros de la URL en función del estado de 'products'.
    */
-  private setParams() {
+  private setParams(): void {
     this.router.navigate([], {
       relativeTo: this._activatedRoute,
       queryParams: {
+        // budget: this.budgetName,
+        // customer: this.customerName,
         paginaWeb: this.products.web.selected,
         campaniaSeo: this.products.seo.selected,
         campaniaAds: this.products.gads.selected,
@@ -113,12 +183,110 @@ export class BudgetsService {
       },
       queryParamsHandling: 'merge'
     });
+
+    // this.budgetName$.next(this.budgetName);
+  }
+
+  /**
+   * Copia la url del presupuesto actual y la pega en el portapapeles.
+   */
+  shareBudget(): void {
+    const url = this.router.createUrlTree([], {
+      relativeTo: this._activatedRoute,
+      queryParams: {
+        // budget: this.budgetName,
+        // customer: this.customerName,
+        paginaWeb: this.products.web.selected,
+        campaniaSeo: this.products.seo.selected,
+        campaniaAds: this.products.gads.selected,
+        nPaginas: this.products.web.pages,
+        nIdiomas: this.products.web.languages
+      }
+    });
+    const textArea = document.createElement('textarea');
+    textArea.value = window.location.origin + url;
+    document.body.appendChild(textArea);
+    textArea.select();
+    document.execCommand('copy');
+    document.body.removeChild(textArea);
+    alert('Link del pressupost enganxat al porta-papers!');
+  }
+
+  shareSavedBudget(budget: Budget) {
+    // const budgetname = this.budgetName;
+    // const customer = this.customerName;
+    const paginaWeb = budget.hasProductWeb;
+    const campaniaSeo = budget.hasProductSeo
+    const campaniaAds = budget.hasProductGads
+    const nPaginas = budget.webNumberPages;
+    const nIdiomas = budget.webNumberLanguages;
+    // let result = `/calculadora?budgetname=${budgetname}&`;
+    // result += `customer=${customer}&`;
+    let result = `/calculadora?`;
+    result += `paginaWeb=${paginaWeb}&`;
+    result += `campaniaSeo=${campaniaSeo}&`;
+    result += `campaniaAds=${campaniaAds}&`;
+    result += `nPaginas=${nPaginas}&`;
+    result += `nIdiomas=${nIdiomas}`;
+
+    const textArea = document.createElement('textarea');
+    textArea.value = window.location.origin + result;
+    document.body.appendChild(textArea);
+    textArea.select();
+    document.execCommand('copy');
+    document.body.removeChild(textArea);
+    alert('Link del pressupost enganxat al porta-papers!');
+  }
+
+  openSavedBudget(budget: Budget) {
+    const paginaWeb = budget.hasProductWeb;
+    const campaniaSeo = budget.hasProductSeo
+    const campaniaAds = budget.hasProductGads
+    const nPaginas = budget.webNumberPages;
+    const nIdiomas = budget.webNumberLanguages;
+
+    this.router.navigate([], {
+      relativeTo: this._activatedRoute,
+      queryParams: {
+        paginaWeb: paginaWeb,
+        campaniaSeo: campaniaSeo,
+        campaniaAds: campaniaAds,
+        nPaginas: nPaginas,
+        nIdiomas: nIdiomas
+      },
+      queryParamsHandling: 'preserve'
+    });
+
+    this.products.web.selected = paginaWeb;
+    this.products.seo.selected = campaniaSeo;
+    this.products.gads.selected = campaniaAds;
+
+    let paginas: number = nPaginas;
+
+    let idiomas: number = nIdiomas;
+
+    this.budgetName$.next(budget.budgetName);
+
+    this.customerName$.next(budget.customerName);
+
+    if (!isNaN(paginas)) {
+      this.products.web.pages = paginas;
+      this.npages$.next(paginas);
+    }
+
+    if (!isNaN(idiomas)) {
+      this.products.web.languages = idiomas;
+      this.nlanguages$.next(idiomas);
+    }
+
+    this.calculateTotal();
+
   }
 
   /**
    * Recupera los presupuestos almacenados en localstorage.
    */
-  private getLocalStorage():void {
+  private getLocalStorage(): void {
     // Recuperación de los presupuestos (Budget[]) guardados.
     const budgets = window.localStorage.getItem("budgets");
     if (budgets != null) {
@@ -191,6 +359,8 @@ export class BudgetsService {
    * @returns Number - Número de páginas del presupuesto actual almacenadas en 'products'.
    */
   getNPages = (): number => this.products.web.pages;
+
+
 
   /**
    * Obtener el número de idiomas en el presupuesto actual.

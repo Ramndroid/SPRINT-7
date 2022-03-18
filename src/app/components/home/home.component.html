@@ -64,12 +64,16 @@
             <!-- Botones: Añadir el presupuesto a la lista / Borrar campos actuales -->
             <div class="d-flex justify-content-center mt-5 gap-3">
                 <button placement="bottom" ngbTooltip="Esborrar els camps" [openDelay]="800" [closeDelay]="500"
-                    class="buttons-current-budget bg-primary"
-                    (click)="homeEraseFields()"><i class="bi bi-trash3-fill fs-5"></i></button>
+                    class="buttons-current-budget bg-primary" (click)="homeEraseFields()"><i
+                        class="bi bi-trash3-fill fs-5"></i></button>
+
+                <button placement="bottom" ngbTooltip="Enganxa la url al portapapers" [openDelay]="800" [closeDelay]="500"
+                    class="buttons-current-budget bg-primary" (click)="shareBudget()"><i
+                        class="bi bi-share-fill fs-5"></i></button>
 
                 <button type="submit" placement="bottom" ngbTooltip="Afegir nou pressupost" [openDelay]="800"
-                    [closeDelay]="500" class="buttons-current-budget bg-primary"
-                    (click)="homeSaveBudget()"><i class="bi bi-plus-lg fs-4"></i></button>
+                    [closeDelay]="500" class="buttons-current-budget bg-primary" (click)="homeSaveBudget()"><i
+                        class="bi bi-plus-lg fs-4"></i></button>
             </div>
         </div>
 

@@ -43,7 +43,7 @@ export function sortByDate(budgets: Budget[]): Budget[] {
  * @returns Budget[] - Matriz con los 'budget' cuyo nombre de prespuesto incluya la palabra buscada.
  */
 export function searchByName(budgets: Budget[], search: string): Budget[] {
-    const result = budgets.filter(budget => budget.budgetName.toLocaleLowerCase().includes(search.toLocaleLowerCase()));
+    const result = budgets.filter(budget => budget.budgetName.toLocaleLowerCase().startsWith(search.toLocaleLowerCase()));
     return result;
 }
 

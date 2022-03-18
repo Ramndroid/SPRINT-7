@@ -1,4 +1,4 @@
-import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
+import { Component, DoCheck, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 
 /**
@@ -12,7 +12,7 @@ import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
   templateUrl: './quantity-buttons.component.html',
   styleUrls: ['./quantity-buttons.component.css']
 })
-export class QuantityButtonsComponent implements OnInit {
+export class QuantityButtonsComponent implements OnInit, DoCheck {
 
   /**
    * ViewChild enlazado con ng-template #modal.
@@ -46,6 +46,9 @@ export class QuantityButtonsComponent implements OnInit {
    * @param modal Elemento para poder visualizar 'modalInfoButton'.
    */
   constructor( private modal: NgbModal ) { }
+  ngDoCheck(): void {
+    this.quantityOutputValue = this.quantityPreValue;
+  }
 
   /**
    * ngOnInit()
@@ -73,8 +76,10 @@ export class QuantityButtonsComponent implements OnInit {
     const valueTest = this.quantityOutputValue + value;
     if (valueTest >= 0) {
       this.quantityOutputValue += value;
+      this.quantityPreValue += value;
     } else {
       this.quantityOutputValue = 1;
+      this.quantityPreValue = 1;
     }
     this.quantityButtonPressed.emit(this.quantityOutputValue);
   }
@@ -88,6 +93,7 @@ export class QuantityButtonsComponent implements OnInit {
     const valueToInt = parseInt(value);
     if (!isNaN(valueToInt)) {
       this.quantityOutputValue = valueToInt;
+      this.quantityPreValue = valueToInt;
       this.quantityButtonPressed.emit(this.quantityOutputValue);
     }
   }

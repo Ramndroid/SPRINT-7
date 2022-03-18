@@ -69,6 +69,14 @@ export class PressupostListComponent {
    */
   pressupostListDeleteBudget = (id: number): void => this.serviceBudget.deleteBudget(id);
 
+  pressupostListShareBudget(budget: Budget): void {
+    this.serviceBudget.shareSavedBudget(budget);
+  }
+
+  pressupostListClickSavedBudget(budget: Budget) {
+    this.serviceBudget.openSavedBudget(budget);
+  }
+
   /**
    * Cambia la instrucción que determina cómo se muestran los presupuestos.
    * 
