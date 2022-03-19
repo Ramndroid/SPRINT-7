@@ -98,15 +98,14 @@
                 <p class="ms-5 mb-1 fs-6" *ngIf="budget.hasProductGads">
                     {{pressupostListProductTitles[2]}}</p>
 
-                
             </a>
 
             <!-- Botón eliminar presupuesto de la lista -->
-            <div class="d-flex justify-content-end mb-4">
-                <button placement="left" ngbTooltip="Compartir aquest pressupost" [openDelay]="800" [closeDelay]="500"
+            <div class="d-flex justify-content-end mb-5">
+                <button placement="left" ngbTooltip="Compartir el pressupost #{{ budget.id }}" [openDelay]="800" [closeDelay]="500"
                     class="btn btn-outline-danger me-2"
                     (click)="pressupostListShareBudget(budget)"><i class="bi bi-share"></i></button>
-                <button placement="left" ngbTooltip="Eliminar aquest pressupost" [openDelay]="800" [closeDelay]="500"
+                <button placement="left" ngbTooltip="Eliminar el pressupost #{{ budget.id }}" [openDelay]="800" [closeDelay]="500"
                     class="btn btn-outline-danger"
                     (click)="pressupostListDeleteBudget(budget.id)"><i class="bi bi-trash3"></i></button>
             </div>

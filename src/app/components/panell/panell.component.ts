@@ -1,5 +1,5 @@
 import { BudgetsService } from './../../services/get-total-budget.service';
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy, DoCheck } from '@angular/core';
 import { Subscription } from 'rxjs';
 
 /**
@@ -12,7 +12,7 @@ import { Subscription } from 'rxjs';
   templateUrl: './panell.component.html',
   styleUrls: ['./panell.component.css']
 })
-export class PanellComponent implements OnInit, OnDestroy {
+export class PanellComponent implements OnInit, OnDestroy, DoCheck {
 
   /**
    * Número de páginas de la web seleccionadas por el usuario. 
@@ -20,7 +20,7 @@ export class PanellComponent implements OnInit, OnDestroy {
    */
   panelNPages: number = 0;
 
-  private panelNPages$: Subscription;
+  protected panelNPages$: Subscription;
 
   /**
    * Número de idiomas de la web seleccionados por el usuario. 
@@ -28,7 +28,7 @@ export class PanellComponent implements OnInit, OnDestroy {
    */
   panelNLanguages: number = 0;
 
-  private panelNLanguages$: Subscription;
+  protected panelNLanguages$: Subscription;
 
   /**
    * Boolean usada para determinar si los valores introducidos por el usuario cumplen unos mínimos requisitos.
@@ -59,6 +59,15 @@ export class PanellComponent implements OnInit, OnDestroy {
     this.panelNLanguages$ = new Subscription;
   }
 
+  ngDoCheck(): void {
+    this.panelNPages = this.serviceBudget.products.web.pages;
+    this.panelNLanguages = this.serviceBudget.products.web.languages;
+  }
+
+  ngOnDestroy(): void {
+    this.panelNPages$.unsubscribe();
+    this.panelNLanguages$.unsubscribe();
+  }
  
   ngOnInit(): void {
     this.panelNPages$ = this.serviceBudget.getNPages$()
@@ -75,12 +84,6 @@ export class PanellComponent implements OnInit, OnDestroy {
         }
       );
   }
-
-  ngOnDestroy(): void {
-    this.panelNPages$.unsubscribe();
-    this.panelNLanguages$.unsubscribe();
-  }
-
 
   /**
    * Modifica la cantidad de páginas seleccionadas por el usuario.

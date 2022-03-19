@@ -46,6 +46,7 @@ export class QuantityButtonsComponent implements OnInit, DoCheck {
    * @param modal Elemento para poder visualizar 'modalInfoButton'.
    */
   constructor( private modal: NgbModal ) { }
+  
   ngDoCheck(): void {
     this.quantityOutputValue = this.quantityPreValue;
   }

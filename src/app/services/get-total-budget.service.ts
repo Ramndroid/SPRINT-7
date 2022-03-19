@@ -1,5 +1,5 @@
 import { Budget } from './../models/budget';
-import { AfterContentInit, Injectable, OnInit } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { Products } from '../models/products';
 import { reverseArray, sortByAlphabet, sortByDate, searchByName } from './sort-and-search-tools';
 import { getValueInEuros } from './show-value-in-euros';
@@ -67,9 +67,9 @@ export class BudgetsService {
 
   private nlanguages$: Subject<number>;
 
-  // budgetName: string;
+  budgetName: string;
 
-  // customerName: string;
+  customerName: string;
 
   /**
    * Constructor.
@@ -87,11 +87,11 @@ export class BudgetsService {
     this.nlanguages$ = new Subject();
     this.budgetName$ = new Subject();
     this.customerName$ = new Subject();
+    this.budgetName = "";
+    this.customerName = "";
 
     this.getParams();
     this.getLocalStorage();
-    // this.budgetName = "";
-    // this.customerName = "";
   }
 
   getBudgetName$(): Observable<string> {
@@ -115,25 +115,17 @@ export class BudgetsService {
    */
   private getParams(): void {
     let urlTree = this.router.parseUrl(this.router.url);
-    // let budgetName: string = urlTree.queryParams['budget'] === undefined ? "noname" : urlTree.queryParams['budget'];
-    // let customerName: string = urlTree.queryParams['customer'];
+    let budgetName: string = urlTree.queryParams['budget'];
+    let customerName: string = urlTree.queryParams['customer'];
     let paginaWeb: boolean = urlTree.queryParams['paginaWeb'] === "true";
     let campaniaSeo: boolean = urlTree.queryParams['campaniaSeo'] === "true";
     let campaniaAds: boolean = urlTree.queryParams['campaniaAds'] === "true";
 
-    // console.log(budgetName);
-    // this.modBudgetName(budgetName);
-    // this.budgetName$.next(budgetName);
-    // this.budgetName = budgetName;
+    this.budgetName = budgetName;
+    this.budgetName$.next(budgetName);
 
-
-    // this.customerName$.next(customerName);
-    // this.budgetName = budgetName;
-    // if (budgetName !== undefined) {
-    // this.budgetName$.next(budgetName);
-
-    // }
-    // this.customerName = customerName;
+    this.customerName = customerName;
+    this.customerName$.next(customerName);
 
     this.products.web.selected = paginaWeb;
     this.products.seo.selected = campaniaSeo;
@@ -153,7 +145,6 @@ export class BudgetsService {
     }
 
     this.calculateTotal();
-    // this.budgetName$.next("ramon");
   }
 
   /**
@@ -163,8 +154,8 @@ export class BudgetsService {
     this.router.navigate([], {
       relativeTo: this._activatedRoute,
       queryParams: {
-        // budget: this.budgetName,
-        // customer: this.customerName,
+        budget: this.budgetName,
+        customer: this.customerName,
         paginaWeb: this.products.web.selected,
         campaniaSeo: this.products.seo.selected,
         campaniaAds: this.products.gads.selected,
@@ -173,8 +164,6 @@ export class BudgetsService {
       },
       queryParamsHandling: 'merge'
     });
-
-    // this.budgetName$.next(this.budgetName);
   }
 
   /**
@@ -184,8 +173,8 @@ export class BudgetsService {
     const url = this.router.createUrlTree([], {
       relativeTo: this._activatedRoute,
       queryParams: {
-        // budget: this.budgetName,
-        // customer: this.customerName,
+        budget: this.budgetName,
+        customer: this.customerName,
         paginaWeb: this.products.web.selected,
         campaniaSeo: this.products.seo.selected,
         campaniaAds: this.products.gads.selected,
@@ -203,16 +192,15 @@ export class BudgetsService {
   }
 
   shareSavedBudget(budget: Budget) {
-    // const budgetname = this.budgetName;
-    // const customer = this.customerName;
+    const budgetname = this.budgetName;
+    const customer = this.customerName;
     const paginaWeb = budget.hasProductWeb;
     const campaniaSeo = budget.hasProductSeo
     const campaniaAds = budget.hasProductGads
     const nPaginas = budget.webNumberPages;
     const nIdiomas = budget.webNumberLanguages;
-    // let result = `/calculadora?budgetname=${budgetname}&`;
-    // result += `customer=${customer}&`;
-    let result = `/calculadora?`;
+    let result = `/calculadora?budget=${budgetname}&`;
+    result += `customer=${customer}&`;
     result += `paginaWeb=${paginaWeb}&`;
     result += `campaniaSeo=${campaniaSeo}&`;
     result += `campaniaAds=${campaniaAds}&`;
@@ -238,6 +226,8 @@ export class BudgetsService {
     this.router.navigate([], {
       relativeTo: this._activatedRoute,
       queryParams: {
+        budget: budget.budgetName,
+        customer: budget.customerName,
         paginaWeb: paginaWeb,
         campaniaSeo: campaniaSeo,
         campaniaAds: campaniaAds,
@@ -255,8 +245,9 @@ export class BudgetsService {
 
     let idiomas: number = nIdiomas;
 
+    this.budgetName = budget.budgetName;
+    this.customerName = budget.customerName;
     this.budgetName$.next(budget.budgetName);
-
     this.customerName$.next(budget.customerName);
 
     if (!isNaN(paginas)) {
@@ -341,6 +332,8 @@ export class BudgetsService {
     this.products.web.languages = 1;
     this.products.seo.selected = false;
     this.products.gads.selected = false;
+    this.budgetName = "";
+    this.customerName = "";
     this.npages$.next(1);
     this.nlanguages$.next(1);
   }
@@ -352,9 +345,6 @@ export class BudgetsService {
    */
   setNPages(value: number): void {
     this.products.web.pages = value;
-    // this.npages$.next(value);
-
-
   }
 
   /**
@@ -364,7 +354,6 @@ export class BudgetsService {
    */
   setNLanguages(value: number): void {
     this.products.web.languages = value;
-    // this.nlanguages$.next(value);
   }
 
   /**
@@ -446,13 +435,13 @@ export class BudgetsService {
    * @param customerName Nombre del cliente del presupuesto.
    * @returns Devuelve true si ha podido crear un nuevo presupuesto, y false si no.
    */
-  addNewBudget(budgetName: string, customerName: string): boolean {
+  addNewBudget(): boolean {
 
     if (this.totalBudget > 0) {
 
       const currentBudget = new Budget(
-        budgetName,
-        customerName,
+        this.budgetName,
+        this.customerName,
         this.products.web.selected,
         this.products.seo.selected,
         this.products.gads.selected,
