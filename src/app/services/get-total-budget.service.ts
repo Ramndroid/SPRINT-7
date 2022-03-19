@@ -4,7 +4,7 @@ import { Products } from '../models/products';
 import { reverseArray, sortByAlphabet, sortByDate, searchByName } from './sort-and-search-tools';
 import { getValueInEuros } from './show-value-in-euros';
 import { ShowBudgetsInstructions } from '../models/show-budgets-enum';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router, UrlTree } from '@angular/router';
 import { Observable, Subject } from 'rxjs';
 
 /**
@@ -182,18 +182,13 @@ export class BudgetsService {
         nIdiomas: this.products.web.languages
       }
     });
-    const textArea = document.createElement('textarea');
-    textArea.value = window.location.origin + url;
-    document.body.appendChild(textArea);
-    textArea.select();
-    document.execCommand('copy');
-    document.body.removeChild(textArea);
-    alert('Link del pressupost enganxat al porta-papers!');
+
+    this.copyToClipBoard(url);
   }
 
   shareSavedBudget(budget: Budget) {
-    const budgetname = this.budgetName;
-    const customer = this.customerName;
+    const budgetname = budget.budgetName;
+    const customer = budget.customerName;
     const paginaWeb = budget.hasProductWeb;
     const campaniaSeo = budget.hasProductSeo
     const campaniaAds = budget.hasProductGads
@@ -207,16 +202,36 @@ export class BudgetsService {
     result += `nPaginas=${nPaginas}&`;
     result += `nIdiomas=${nIdiomas}`;
 
-    const textArea = document.createElement('textarea');
-    textArea.value = window.location.origin + result;
-    document.body.appendChild(textArea);
-    textArea.select();
-    document.execCommand('copy');
-    document.body.removeChild(textArea);
-    alert('Link del pressupost enganxat al porta-papers!');
+    this.copyToClipBoard(result);
+  }
+
+  private copyToClipBoard(result: string | UrlTree) {
+
+    if (navigator.clipboard) {
+      navigator.clipboard.writeText(window.location.origin + result)
+        .then(() => {
+          alert('Link del pressupost enganxat al porta-papers!');
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    } else {
+      // Si no acepta navigator.clipboard
+      const textArea = document.createElement('textarea');
+      textArea.value = window.location.origin + result;
+      document.body.appendChild(textArea);
+      textArea.select();
+      document.execCommand('copy');
+      document.body.removeChild(textArea);
+      alert('Link del pressupost enganxat al portapapers!');
+    }
+
+
   }
 
   openSavedBudget(budget: Budget) {
+    const budgetName = budget.budgetName;
+    const customer = budget.customerName;
     const paginaWeb = budget.hasProductWeb;
     const campaniaSeo = budget.hasProductSeo
     const campaniaAds = budget.hasProductGads
@@ -226,8 +241,8 @@ export class BudgetsService {
     this.router.navigate([], {
       relativeTo: this._activatedRoute,
       queryParams: {
-        budget: budget.budgetName,
-        customer: budget.customerName,
+        budget: budgetName,
+        customer: customer,
         paginaWeb: paginaWeb,
         campaniaSeo: campaniaSeo,
         campaniaAds: campaniaAds,
@@ -241,14 +256,13 @@ export class BudgetsService {
     this.products.seo.selected = campaniaSeo;
     this.products.gads.selected = campaniaAds;
 
-    let paginas: number = nPaginas;
+    const paginas: number = nPaginas;
+    const idiomas: number = nIdiomas;
 
-    let idiomas: number = nIdiomas;
-
-    this.budgetName = budget.budgetName;
-    this.customerName = budget.customerName;
-    this.budgetName$.next(budget.budgetName);
-    this.customerName$.next(budget.customerName);
+    this.budgetName = budgetName;
+    this.customerName = customer;
+    this.budgetName$.next(budgetName);
+    this.customerName$.next(customer);
 
     if (!isNaN(paginas)) {
       this.products.web.pages = paginas;
